@@ -27,3 +27,6 @@ Feel free to use and modify the code as per your needs.
 ## Acknowledgements
 
 This project was inspired by the classic game of Tic-Tac-Toe and is a basic implementation for learning purposes.
+
+## References 
+[Cpp-mcts](https://github.com/Konijnendijk/cpp-mcts.git) *https://github.com/Konijnendijk/cpp-mcts.git
