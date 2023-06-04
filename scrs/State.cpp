@@ -1,6 +1,6 @@
 #include "State.hpp"
 
-State::State() : turn(-1)
+State::State() : turn(1)
 {
     // initialize board as empty
     for (int i = 0; i < 9; i++)
@@ -35,8 +35,8 @@ int State::calculate_winner() const
 {
     if (player_won(1))
         return 1;
-    else if (player_won(0))
-        return 0;
+    else if (player_won(-1))
+        return -1;
     bool all_taken = true;
     for (int i = 0; i < 9; i++)
     {
@@ -58,7 +58,7 @@ int State::get_turn() const { return turn; }
 int State::get_winner() const { return winner; }
 bool State::is_terminal() const
 {
-    return winner != 0;
+    return calculate_winner() != 0;
 }
 
 State *State::next_state(const Move *move) const
@@ -117,7 +117,7 @@ double State::rollout() const
     {
         if (available.empty())
         {
-            std::cerr << "Warning: Ran out of available moves and state is not terminal?";
+            std::cerr << "Warning: Ran out of available moves and state is not terminal?" << std::endl;
             return 0.0;
         }
         r = rand() % available.size();
@@ -145,6 +145,6 @@ void State::print() const
         if ((i + 1) % 3 == 0)
             std::cout << "\n";
     }
+    std::cout << "\n\n";
 }
 bool State::player1_turn() const { return turn == '1'; }
-
