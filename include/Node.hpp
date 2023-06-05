@@ -2,14 +2,16 @@
 #define __NODE_HPP__
 
 #include "State.hpp"
+#include "Model.hpp"
 class Node
 {
 
 public:
-    Node(Node *parent, State *state, const Move *move);
+    Node(Node *parent, State *state, const Move *move, Net net);
     ~Node();
 
     bool terminal;
+    Net net;
     unsigned int size;
     unsigned int number_of_simulations;
     double score; // e.g. number of wins (could be int but double is more general if we use evaluation functions)

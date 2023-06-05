@@ -1,7 +1,7 @@
 #include "Node.hpp"
 
-Node::Node(Node *parent, State *state, const Move *move)
-    : parent(parent), state(state), move(move), score(0.0), number_of_simulations(0), size(0)
+Node::Node(Node *parent, State *state, const Move *move, Net net)
+    : parent(parent), state(state), move(move), net(net), score(0.0), number_of_simulations(0), size(0)
 {
     children = new std::vector<Node *>();
     children->reserve(STARTING_NUMBER_OF_CHILDREN);
@@ -67,10 +67,14 @@ void Node::expand()
     }
     // get next untried action
     Move *next_move = untried_actions->back(); // get value
-    untried_actions->pop_back();               // remove it
+
+
+    untried_actions->pop_back();       
+    auto my_new_state = state->state_to_model_input();        // remove it
+    auto policy = net->farward(my_new_state);
     State *next_state = state->next_state(next_move);
     // build a new MCTS node from it
-    Node *new_node = new Node(this, next_state, next_move);
+    Node *new_node = new Node(this, next_state, next_move, net);
     // rollout, updating its stats
     new_node->rollout();
     // add new node to tree

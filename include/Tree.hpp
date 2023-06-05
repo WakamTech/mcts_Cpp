@@ -3,13 +3,15 @@
 
 #include "State.hpp"
 #include "Node.hpp"
+#include "Model.hpp"
 class Tree
 {
     Node *root;
 
 public:
-    Tree(State *starting_state);
+    Tree(State *starting_state, Net net);
     ~Tree();
+    Net net;
     Node *select(double c = 1.41);         // select child node to expand according to tree policy (UCT)
     Node *select_best_child() ;
     void grow_tree(int max_iter, double max_time_in_seconds);

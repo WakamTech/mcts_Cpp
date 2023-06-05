@@ -1,9 +1,10 @@
 #include "Tree.hpp"
 
-Tree::Tree(State *starting_state)
+Tree::Tree(State *starting_state, Net net)
 {
+    this->net = net;
     assert(starting_state != NULL);
-    root = new Node(NULL, starting_state, NULL);
+    root = new Node(NULL, starting_state, NULL, net);
 }
 Tree::~Tree()
 {
