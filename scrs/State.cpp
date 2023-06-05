@@ -149,14 +149,14 @@ void State::print() const
 }
 bool State::player1_turn() const { return turn == '1'; }
 
-std::vector<int> State::state_to_model_input()
+std::vector<float> State::state_to_model_input()
 {
-        std::vector<int> board_to_vec;
+        std::vector<float> board_to_vec;
 
     if (get_turn() == 1)
     {
                 for(int i =0; i < 9; ++i){
-            board_to_vec.push_back(board[i / 3][i % 3]);
+            board_to_vec.push_back((float)(board[i / 3][i % 3]));
         } 
     }
     else
@@ -168,7 +168,7 @@ std::vector<int> State::state_to_model_input()
             new_board[i / 3][i % 3] = -board[i / 3][i % 3];
         }
         for(int i =0; i < 9; ++i){
-            board_to_vec.push_back(new_board[i / 3][i % 3]);
+            board_to_vec.push_back((float)(new_board[i / 3][i % 3]));
         } 
     }
     return board_to_vec;

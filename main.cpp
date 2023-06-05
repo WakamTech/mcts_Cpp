@@ -6,7 +6,6 @@
 #include <fstream>
 #include <cstdio>
 
-
 #include "State.hpp"
 #include "Agent.hpp"
 #include "CustomDataset.hpp"
@@ -124,15 +123,18 @@ void games(State *state)
 }
 int main()
 {
+    auto loaded_net = Net();
+    torch::load(loaded_net, "simple_net.pt");
+
     State *newstate = new State();
     newstate->print();
-    Agent agentt(newstate, 1000);
+    Agent agentt(newstate,loaded_net, 1000, 30);
     Move *enemy_movesd = NULL;
     int winner;
     bool done = false;
 
     auto net = Net();
-    /*do
+    do
     {
         int x, y;
         std::cout << "x : " << std::endl;
@@ -165,8 +167,8 @@ int main()
             done = true;
             break;
         }
-    } while (!done);*/
-    State *newsstate = new State();
+    } while (!done);
+    /*State *newsstate = new State();
     for (size_t i = 0; i < 200; i++)
     {
         games(newsstate);
@@ -204,13 +206,13 @@ int main()
             //std::cout << " epoch : " << epoch << "; loss : " << loss.item<float>() << std::endl;
             //std::cout << "Epoch: " << epoch << ", Loss: " << loss.item<float>() << std::endl;
         }
-    }
+    }*/
     std::cout << "Training finished" << std::endl;
     // Save the trained model
-    torch::save(net, "simple_net.pt");
+    // torch::save(net, "simple_net.pt");
     // Load the saved model
-    auto loaded_net = Net();
-    torch::load(loaded_net, "simple_net.pt");
+    // auto loaded_net = Net();
+    // torch::load(loaded_net, "simple_net.pt");
 
     std::vector<float> board = {1, 1, 0, 0, 0, 0, 0, -1, -1};
     /*for (int i = 0; i < 9; ++i)
@@ -218,12 +220,12 @@ int main()
         board.push_back(newsstate->board[i / 3][i % 3]);
     }
     board[4]=1, board[0]=-1;*/
-    auto test_input = torch::from_blob(board.data(), {1,9});
+    /*auto test_input = torch::from_blob(board.data(), {1,9});
     std::cout << test_input << std::endl;
     auto test_output = loaded_net->forward(test_input);
     std::cout << "Test input: " << test_input  << "\n" << std::endl;
     newsstate->print() ;
-    std::cout << "Test output: " << test_output << std::endl;
+    std::cout << "Test output: " << test_output << std::endl;*/
 
     return 0;
 }

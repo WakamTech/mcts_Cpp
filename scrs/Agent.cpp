@@ -1,7 +1,7 @@
 #include "Agent.hpp"
 
-Agent::Agent(State *starting_state, int max_iter, int max_seconds, Net net)
-    : max_iter(max_iter), max_seconds(max_seconds), net(net)
+Agent::Agent(State *starting_state, Net net , int max_iter, int max_seconds)
+    : max_iter(max_iter), net(net), max_seconds(max_seconds)
 {
     tree = new Tree(starting_state, net);
 }

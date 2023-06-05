@@ -66,12 +66,17 @@ void Node::expand()
         return;
     }
     // get next untried action
-    Move *next_move = untried_actions->back(); // get value
 
 
     untried_actions->pop_back();       
     auto my_new_state = state->state_to_model_input();        // remove it
-    auto policy = net->farward(my_new_state);
+    auto my_new_state_to_tensor = torch::from_blob(my_new_state.data(), {1,9});
+
+    auto policy = net->forward(my_new_state_to_tensor);
+    auto value = torch::argmax(policy).item<int>();
+
+    Move *next_move = new Move(value/3, value%3, state->get_turn()); // get value
+
     State *next_state = state->next_state(next_move);
     // build a new MCTS node from it
     Node *new_node = new Node(this, next_state, next_move, net);
@@ -145,7 +150,7 @@ Node *Node::advance_tree(const Move *m)
         // Note: UCT may lead to not fully explored tree even for short-term children due to terminal nodes being chosen
         std::cout << "INFO: Didn't find child node. Had to start over." << std::endl;
         State *next_state = state->next_state(m);
-        next = new Node(NULL, next_state, NULL);
+        next = new Node(NULL, next_state, NULL, net);
     }
     else
     {

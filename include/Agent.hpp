@@ -7,7 +7,7 @@ class Agent
 { // example of an agent based on the MCTS_tree. One can also use the tree directly.
 
 public:
-    Agent(State *starting_state, int max_iter = 100000, int max_seconds = 30, Net net);
+    Agent(State *starting_state, Net net, int max_iter = 100000, int max_seconds = 30);
     ~Agent();
 
     Tree *tree;
