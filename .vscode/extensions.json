@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "ms-vscode.cpptools-themes"
+        "ms-vscode.cpptools-themes",
+        "visualstudioexptteam.vscodeintellicode"
     ]
 }

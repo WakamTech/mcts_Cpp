@@ -32,6 +32,7 @@ public:
     void print() const;
 
     bool player1_turn() const ;
+    void state_to_model_input();
 };
 
 #endif //__STATE_HPP__

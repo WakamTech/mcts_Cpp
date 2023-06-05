@@ -23,6 +23,9 @@ set(HEADERS
         include/Node.hpp
         include/State.hpp
         include/Tree.hpp
+        include/Load_CSV.hpp
+        include/CustomDataset.hpp
+        include/Model.hpp
 )
 
 include_directories(include)

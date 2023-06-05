@@ -3,11 +3,22 @@
 #include <map>
 #include <iomanip>
 #include <algorithm>
+#include <fstream>
+#include <cstdio>
+
 
 #include "State.hpp"
 #include "Agent.hpp"
+#include "CustomDataset.hpp"
+#include "Model.hpp"
+
+#include <iostream>
+
+#define DATASET_FILE_NAME "dataset.csv"
+#define TARGET_FILE_NAME "target.csv"
 
 std::vector<int> moves;
+State *myState;
 
 void print_database(std::vector<int> data_moves)
 {
@@ -30,7 +41,7 @@ void print_(std::vector<int> data_moves)
         std::cout << elm << " ";
     }
 }
-void simulate_full_game(State *state, std::map<std::vector<int>, std::vector<int>> & states_moves)
+void simulate_full_game(State *state, std::map<std::vector<int>, std::vector<int>> &states_moves)
 {
     auto available_moves = state->actions_to_try();
     // Seed the random number generator
@@ -55,7 +66,7 @@ void simulate_full_game(State *state, std::map<std::vector<int>, std::vector<int
         states_moves.insert(std::make_pair(board, made_move));
     }
     state = state->next_state(random_move);
-    moves.push_back(3*random_move->x + random_move->y);
+    moves.push_back(3 * random_move->x + random_move->y);
 
     state->print();
     if (!state->is_terminal())
@@ -71,25 +82,45 @@ void simulate_full_game(State *state, std::map<std::vector<int>, std::vector<int
         else if (state->get_winner() == -1)
             moves.push_back(-10);
         std::cout << "ok done" << std::endl;
+        myState = state;
     }
 }
 
-void games(State *state)
+void write_to_csv(std::map<std::vector<int>, std::vector<int>> states_moves)
 {
-    std::map<std::vector<int>, std::vector<int>> states_moves;
-
-    simulate_full_game(state, states_moves);
-    state->print();
-
     for (std::map<std::vector<int>, std::vector<int>>::reverse_iterator it = states_moves.rbegin(); it != states_moves.rend(); ++it)
     {
         print_(it->first);
         std::cout << " -> ";
         print_(it->second);
         std::cout << "\n\n";
+        std::ofstream dataset(DATASET_FILE_NAME, std::ios::app);
+        std::ofstream target(TARGET_FILE_NAME, std::ios::app);
+        for (auto e : it->first)
+        {
+            dataset << e << ",";
+        }
+        dataset << "\n";
+        dataset.close();
+        for (auto e : it->second)
+        {
+            target << e << ",";
+        }
+        target << "\n";
+        target.close();
     }
-    //std::cout << state->print << std::endl;
-    state->print();
+}
+void games(State *state)
+{
+    std::map<std::vector<int>, std::vector<int>> states_moves;
+
+    simulate_full_game(state, states_moves);
+    state = myState;
+    myState = NULL;
+    if (state->get_winner() == 1 || state->get_winner() == 2)
+    {
+        write_to_csv(states_moves);
+    }
 }
 int main()
 {
@@ -99,6 +130,8 @@ int main()
     Move *enemy_movesd = NULL;
     int winner;
     bool done = false;
+
+    auto net = Net();
     /*do
     {
         int x, y;
@@ -134,11 +167,63 @@ int main()
         }
     } while (!done);*/
     State *newsstate = new State();
-    /*for (size_t i = 0; i < 2; i++)
+    for (size_t i = 0; i < 200; i++)
     {
-        simulate_full_game(1, newsstate);
-    }*/
-    games(newsstate);
+        games(newsstate);
+    }
     print_database(moves);
+    std::cout << std::fixed << std::setprecision(6);
+    auto dataset = CustomDataset(DATASET_FILE_NAME, TARGET_FILE_NAME)
+                       .map(torch::data::transforms::Stack<>());
+
+    auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(
+        std::move(dataset),
+        200);
+
+    torch::optim::Adam optimizer(net->parameters(), torch::optim::AdamOptions(0.03));
+
+    auto criterion = torch::nn::BCELoss();
+
+    for (int epoch = 0; epoch < 3000; ++epoch)
+    {
+        for (auto &batch : *data_loader)
+        {
+            //std::cout << "Data: " << batch.data << std::endl;
+            //std::cout << "Target: " << batch.target << std::endl;
+            auto data = batch.data;
+            auto labels = batch.target;
+
+            // Forward pass
+            auto output = net->forward(data);
+            auto loss = criterion(output.to(torch::kFloat), labels.to((torch::kFloat)));
+
+            // Backward pass and optimize
+            optimizer.zero_grad();
+            loss.backward();
+            optimizer.step();
+            //std::cout << " epoch : " << epoch << "; loss : " << loss.item<float>() << std::endl;
+            //std::cout << "Epoch: " << epoch << ", Loss: " << loss.item<float>() << std::endl;
+        }
+    }
+    std::cout << "Training finished" << std::endl;
+    // Save the trained model
+    torch::save(net, "simple_net.pt");
+    // Load the saved model
+    auto loaded_net = Net();
+    torch::load(loaded_net, "simple_net.pt");
+
+    std::vector<float> board = {1, 1, 0, 0, 0, 0, 0, -1, -1};
+    /*for (int i = 0; i < 9; ++i)
+    {
+        board.push_back(newsstate->board[i / 3][i % 3]);
+    }
+    board[4]=1, board[0]=-1;*/
+    auto test_input = torch::from_blob(board.data(), {1,9});
+    std::cout << test_input << std::endl;
+    auto test_output = loaded_net->forward(test_input);
+    std::cout << "Test input: " << test_input  << "\n" << std::endl;
+    newsstate->print() ;
+    std::cout << "Test output: " << test_output << std::endl;
+
     return 0;
 }
