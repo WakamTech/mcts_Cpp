@@ -135,7 +135,8 @@ std::vector<float> convert_to_vector(std::vector<float> vector, int player)
 
         for (int i = 0; i < 9; i++)
         {
-            board_to_vec[i] = -vector[i];
+            if (vector[i] != 0)
+                board_to_vec[i] = -vector[i];
         }
     }
     return board_to_vec;
@@ -188,11 +189,11 @@ int main()
             break;
         }
     } while (!done);*/
-    /*State *newsstate = new State();
-    for (size_t i = 0; i < 200; i++)
+    State *newsstate = new State();
+    for (size_t i = 0; i < 60000; i++)
     {
         games(newsstate);
-    }
+    }/*
     print_database(moves);
     std::cout << std::fixed << std::setprecision(6);
     auto dataset = CustomDataset(DATASET_FILE_NAME, TARGET_FILE_NAME)
@@ -240,15 +241,15 @@ int main()
         board.push_back(newsstate->board[i / 3][i % 3]);
     }*/
     // board[4]=1, board[0]=-1;
-    board = convert_to_vector(board, -1);
+    /*board = convert_to_vector(board, -1);
     auto test_input = torch::from_blob(board.data(), {1, 9});
     std::cout << test_input << std::endl;
     auto test_output = loaded_net->forward(test_input);
     std::cout << "Test input: " << test_input << "\n"
-              << std::endl;
+              << std::endl;*/
     // newsstate->print() ;
-    std::cout << "Test output: " << test_output << std::endl;
-    std::cout << "Test output chosen position : " << torch::argmax(test_output).item<int>() << std::endl;
+    /*std::cout << "Test output: " << test_output << std::endl;
+    std::cout << "Test output chosen position : " << torch::argmax(test_output).item<int>() << std::endl;*/
 
     return 0;
 }
