@@ -121,12 +121,32 @@ void games(State *state)
         write_to_csv(states_moves);
     }
 }
+std::vector<float> convert_to_vector(std::vector<float> vector, int player)
+{
+    std::vector<float> board_to_vec;
+    if (player == 1)
+    {
+        for (int i = 0; i < 9; ++i)
+            board_to_vec.push_back((float)(vector[i]));
+    }
+    else
+    {
+        board_to_vec = vector;
+
+        for (int i = 0; i < 9; i++)
+        {
+            board_to_vec[i] = -vector[i];
+        }
+    }
+    return board_to_vec;
+}
+
 int main()
 {
     auto loaded_net = Net();
     torch::load(loaded_net, "simple_net.pt");
 
-    State *newstate = new State();
+    /*State *newstate = new State();
     newstate->print();
     Agent agentt(newstate,loaded_net, 1000, 30);
     Move *enemy_movesd = NULL;
@@ -167,7 +187,7 @@ int main()
             done = true;
             break;
         }
-    } while (!done);
+    } while (!done);*/
     /*State *newsstate = new State();
     for (size_t i = 0; i < 200; i++)
     {
@@ -218,14 +238,17 @@ int main()
     /*for (int i = 0; i < 9; ++i)
     {
         board.push_back(newsstate->board[i / 3][i % 3]);
-    }
-    board[4]=1, board[0]=-1;*/
-    /*auto test_input = torch::from_blob(board.data(), {1,9});
+    }*/
+    // board[4]=1, board[0]=-1;
+    board = convert_to_vector(board, -1);
+    auto test_input = torch::from_blob(board.data(), {1, 9});
     std::cout << test_input << std::endl;
     auto test_output = loaded_net->forward(test_input);
-    std::cout << "Test input: " << test_input  << "\n" << std::endl;
-    newsstate->print() ;
-    std::cout << "Test output: " << test_output << std::endl;*/
+    std::cout << "Test input: " << test_input << "\n"
+              << std::endl;
+    // newsstate->print() ;
+    std::cout << "Test output: " << test_output << std::endl;
+    std::cout << "Test output chosen position : " << torch::argmax(test_output).item<int>() << std::endl;
 
     return 0;
 }
