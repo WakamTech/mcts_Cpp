@@ -144,8 +144,8 @@ std::vector<float> convert_to_vector(std::vector<float> vector, int player)
 
 int main()
 {
-    auto loaded_net = Net();
-    torch::load(loaded_net, "simple_net.pt");
+    // auto loaded_net = Net();
+    // torch::load(loaded_net, "simple_net.pt");
 
     /*State *newstate = new State();
     newstate->print();
@@ -189,11 +189,13 @@ int main()
             break;
         }
     } while (!done);*/
+    auto net = Net();
+
     State *newsstate = new State();
-    for (size_t i = 0; i < 60000; i++)
+    /*for (size_t i = 0; i < 60000; i++)
     {
         games(newsstate);
-    }/*
+    }*/
     print_database(moves);
     std::cout << std::fixed << std::setprecision(6);
     auto dataset = CustomDataset(DATASET_FILE_NAME, TARGET_FILE_NAME)
@@ -201,18 +203,18 @@ int main()
 
     auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(
         std::move(dataset),
-        200);
+        2000);
 
     torch::optim::Adam optimizer(net->parameters(), torch::optim::AdamOptions(0.03));
 
     auto criterion = torch::nn::BCELoss();
 
-    for (int epoch = 0; epoch < 3000; ++epoch)
+    for (int epoch = 0; epoch < 4000; ++epoch)
     {
         for (auto &batch : *data_loader)
         {
-            //std::cout << "Data: " << batch.data << std::endl;
-            //std::cout << "Target: " << batch.target << std::endl;
+            // std::cout << "Data: " << batch.data << std::endl;
+            // std::cout << "Target: " << batch.target << std::endl;
             auto data = batch.data;
             auto labels = batch.target;
 
@@ -224,13 +226,13 @@ int main()
             optimizer.zero_grad();
             loss.backward();
             optimizer.step();
-            //std::cout << " epoch : " << epoch << "; loss : " << loss.item<float>() << std::endl;
-            //std::cout << "Epoch: " << epoch << ", Loss: " << loss.item<float>() << std::endl;
+            // std::cout << " epoch : " << epoch << "; loss : " << loss.item<float>() << std::endl;
+            // std::cout << "Epoch: " << epoch << ", Loss: " << loss.item<float>() << std::endl;
         }
-    }*/
+    }
     std::cout << "Training finished" << std::endl;
     // Save the trained model
-    // torch::save(net, "simple_net.pt");
+    torch::save(net, "simple_net.pt");
     // Load the saved model
     // auto loaded_net = Net();
     // torch::load(loaded_net, "simple_net.pt");
@@ -250,6 +252,10 @@ int main()
     // newsstate->print() ;
     /*std::cout << "Test output: " << test_output << std::endl;
     std::cout << "Test output chosen position : " << torch::argmax(test_output).item<int>() << std::endl;*/
-
+    /*newsstate = new State();
+    Node *parent;
+    Node *root = new Node(parent, newsstate, new Move(1, 1, 1), loaded_net);
+    root->expand();
+    root->select_best_child(0.2);*/
     return 0;
 }

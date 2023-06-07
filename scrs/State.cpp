@@ -120,10 +120,13 @@ double State::rollout() const
             std::cerr << "Warning: Ran out of available moves and state is not terminal?" << std::endl;
             return 0.0;
         }
+
         r = rand() % available.size();
         a = available[r];
         Move move(a / 3, a % 3, curstate->turn);
         available.erase(available.begin() + r); // delete from available moves
+
+        
         State *old = curstate;
         curstate = (State *)curstate->next_state(&move);
         if (!first)
