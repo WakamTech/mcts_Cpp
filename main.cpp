@@ -208,7 +208,7 @@ int main()
     torch::optim::Adam optimizer(net->parameters(), torch::optim::AdamOptions(0.03));
 
     auto criterion = torch::nn::BCELoss();
-
+    std::cout << "tarining -> [";
     for (int epoch = 0; epoch < 4000; ++epoch)
     {
         for (auto &batch : *data_loader)
@@ -222,14 +222,18 @@ int main()
             auto output = net->forward(data);
             auto loss = criterion(output.to(torch::kFloat), labels.to((torch::kFloat)));
 
-            // Backward pass and optimize
+            // Backward pass and optimize                       
             optimizer.zero_grad();
-            loss.backward();
+            loss.backward();                                
             optimizer.step();
             // std::cout << " epoch : " << epoch << "; loss : " << loss.item<float>() << std::endl;
             // std::cout << "Epoch: " << epoch << ", Loss: " << loss.item<float>() << std::endl;
         }
+        if((epoch+1)%40==0)
+            std::cout << "#";
     }
+    std::cout << "]\n";
+
     std::cout << "Training finished" << std::endl;
     // Save the trained model
     torch::save(net, "simple_net.pt");
