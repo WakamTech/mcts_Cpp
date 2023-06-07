@@ -14,9 +14,11 @@ This is a simple implementation of the Tic-Tac-Toe game in C++. The game allows 
 ## Code Structure
 
 - `main.cpp`: The main entry point of the program. It contains the game loop and user input handling.
+In it, we have some functions that create datasets for the game.
 - `State.h` and `State.cpp`: Defines the `State` class, which represents the game state and provides methods for checking the winner, generating legal moves, and creating new states.
 - `Move.h`: Defines the `Move` class, which represents a player's move (coordinates and player number).
 - Other necessary header files are included as well well.
+- `Model.h`: Define the structure of the pytorch model used to improve the game.
 
 ## License
 
