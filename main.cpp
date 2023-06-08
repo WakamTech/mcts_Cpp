@@ -208,7 +208,10 @@ int main()
     torch::optim::Adam optimizer(net->parameters(), torch::optim::AdamOptions(0.03));
 
     auto criterion = torch::nn::BCELoss();
-    std::cout << "tarining -> [";
+    std::cout << "aa" << std::endl;
+    int a;
+    std::cin >> a;
+    std::cerr << "tarining -> [";
     for (int epoch = 0; epoch < 4000; ++epoch)
     {
         for (auto &batch : *data_loader)
@@ -226,13 +229,13 @@ int main()
             optimizer.zero_grad();
             loss.backward();                                
             optimizer.step();
-            // std::cout << " epoch : " << epoch << "; loss : " << loss.item<float>() << std::endl;
+            //std::cout << " epoch : " << epoch << "; loss : " << loss.item<float>() << std::endl;
             // std::cout << "Epoch: " << epoch << ", Loss: " << loss.item<float>() << std::endl;
         }
         if((epoch+1)%40==0)
-            std::cout << "#";
+            std::cerr << "#";
     }
-    std::cout << "]\n";
+    std::cerr << "]\n";
 
     std::cout << "Training finished" << std::endl;
     // Save the trained model
