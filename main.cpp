@@ -191,12 +191,12 @@ int main()
     } while (!done);*/
     auto net = Net();
 
-    State *newsstate = new State();
+    //State *newsstate = new State();
     /*for (size_t i = 0; i < 60000; i++)
     {
         games(newsstate);
     }*/
-    print_database(moves);
+    /*print_database(moves);
     std::cout << std::fixed << std::setprecision(6);
     auto dataset = CustomDataset(DATASET_FILE_NAME, TARGET_FILE_NAME)
                        .map(torch::data::transforms::Stack<>());
@@ -235,30 +235,30 @@ int main()
         if((epoch+1)%40==0)
             std::cerr << "#";
     }
-    std::cerr << "]\n";
+    std::cerr << "]\n";*/
 
     std::cout << "Training finished" << std::endl;
     // Save the trained model
-    torch::save(net, "simple_net.pt");
+    //torch::save(net, "simple_net.pt");
     // Load the saved model
-    // auto loaded_net = Net();
-    // torch::load(loaded_net, "simple_net.pt");
+    auto loaded_net = Net();
+    torch::load(loaded_net, "simple_net.pt");
 
-    std::vector<float> board = {1, 1, 0, 0, 0, 0, 0, -1, -1};
+    std::vector<float> board = {1, 0, 0, 1, 0, 0, 0, -1, -1};
     /*for (int i = 0; i < 9; ++i)
     {
         board.push_back(newsstate->board[i / 3][i % 3]);
     }*/
     // board[4]=1, board[0]=-1;
-    /*board = convert_to_vector(board, -1);
+    board = convert_to_vector(board, -1);
     auto test_input = torch::from_blob(board.data(), {1, 9});
     std::cout << test_input << std::endl;
     auto test_output = loaded_net->forward(test_input);
-    std::cout << "Test input: " << test_input << "\n"
-              << std::endl;*/
+    std::cout << "Test input: \n" << test_input.view({3,3})  << "\n"
+              << std::endl;
     // newsstate->print() ;
-    /*std::cout << "Test output: " << test_output << std::endl;
-    std::cout << "Test output chosen position : " << torch::argmax(test_output).item<int>() << std::endl;*/
+    std::cout << "Test output: " << test_output<< std::endl;
+    std::cout << "Test output chosen position : " << torch::argmax(test_output).item<int>() << std::endl;
     /*newsstate = new State();
     Node *parent;
     Node *root = new Node(parent, newsstate, new Move(1, 1, 1), loaded_net);
