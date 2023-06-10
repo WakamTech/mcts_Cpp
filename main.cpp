@@ -144,10 +144,10 @@ std::vector<float> convert_to_vector(std::vector<float> vector, int player)
 
 int main()
 {
-    // auto loaded_net = Net();
-    // torch::load(loaded_net, "simple_net.pt");
+    auto loaded_net = Net();
+    torch::load(loaded_net, "simple_net.pt");
 
-    /*State *newstate = new State();
+    State *newstate = new State();
     newstate->print();
     Agent agentt(newstate,loaded_net, 1000, 30);
     Move *enemy_movesd = NULL;
@@ -188,8 +188,8 @@ int main()
             done = true;
             break;
         }
-    } while (!done);*/
-    auto net = Net();
+    } while (!done);
+    //auto net = Net();
 
     //State *newsstate = new State();
     /*for (size_t i = 0; i < 60000; i++)
@@ -241,8 +241,8 @@ int main()
     // Save the trained model
     //torch::save(net, "simple_net.pt");
     // Load the saved model
-    auto loaded_net = Net();
-    torch::load(loaded_net, "simple_net.pt");
+    //auto loaded_net = Net();
+    //torch::load(loaded_net, "simple_net.pt");
 
     std::vector<float> board = {1, 0, 0, 1, 0, 0, 0, -1, -1};
     /*for (int i = 0; i < 9; ++i)
@@ -250,7 +250,7 @@ int main()
         board.push_back(newsstate->board[i / 3][i % 3]);
     }*/
     // board[4]=1, board[0]=-1;
-    board = convert_to_vector(board, -1);
+    /*board = convert_to_vector(board, -1);
     auto test_input = torch::from_blob(board.data(), {1, 9});
     std::cout << test_input << std::endl;
     auto test_output = loaded_net->forward(test_input);
@@ -258,7 +258,7 @@ int main()
               << std::endl;
     // newsstate->print() ;
     std::cout << "Test output: " << test_output<< std::endl;
-    std::cout << "Test output chosen position : " << torch::argmax(test_output).item<int>() << std::endl;
+    std::cout << "Test output chosen position : " << torch::argmax(test_output).item<int>() << std::endl;*/
     /*newsstate = new State();
     Node *parent;
     Node *root = new Node(parent, newsstate, new Move(1, 1, 1), loaded_net);
