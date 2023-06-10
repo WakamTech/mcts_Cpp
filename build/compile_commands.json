@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/build",
+  "command": "/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -DGLOG_CUSTOM_PREFIX_SUPPORT -DUSE_C10D_GLOO -DUSE_DISTRIBUTED -DUSE_RPC -DUSE_TENSORPIPE -I/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/include -isystem /home/Desktop/opt/libtorch/include -isystem /home/Desktop/opt/libtorch/include/torch/csrc/api/include -g -D_GLIBCXX_USE_CXX11_ABI=1 -std=gnu++23 -o CMakeFiles/mcts.dir/main.cpp.o -c /home/kpessou/Desktop/.C++_Projects/console/mcts_C++/main.cpp",
+  "file": "/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/main.cpp"
+},
+{
+  "directory": "/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/build",
+  "command": "/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -DGLOG_CUSTOM_PREFIX_SUPPORT -DUSE_C10D_GLOO -DUSE_DISTRIBUTED -DUSE_RPC -DUSE_TENSORPIPE -I/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/include -isystem /home/Desktop/opt/libtorch/include -isystem /home/Desktop/opt/libtorch/include/torch/csrc/api/include -g -D_GLIBCXX_USE_CXX11_ABI=1 -std=gnu++23 -o CMakeFiles/mcts.dir/scrs/Agent.cpp.o -c /home/kpessou/Desktop/.C++_Projects/console/mcts_C++/scrs/Agent.cpp",
+  "file": "/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/scrs/Agent.cpp"
+},
+{
+  "directory": "/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/build",
+  "command": "/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -DGLOG_CUSTOM_PREFIX_SUPPORT -DUSE_C10D_GLOO -DUSE_DISTRIBUTED -DUSE_RPC -DUSE_TENSORPIPE -I/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/include -isystem /home/Desktop/opt/libtorch/include -isystem /home/Desktop/opt/libtorch/include/torch/csrc/api/include -g -D_GLIBCXX_USE_CXX11_ABI=1 -std=gnu++23 -o CMakeFiles/mcts.dir/scrs/Node.cpp.o -c /home/kpessou/Desktop/.C++_Projects/console/mcts_C++/scrs/Node.cpp",
+  "file": "/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/scrs/Node.cpp"
+},
+{
+  "directory": "/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/build",
+  "command": "/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -DGLOG_CUSTOM_PREFIX_SUPPORT -DUSE_C10D_GLOO -DUSE_DISTRIBUTED -DUSE_RPC -DUSE_TENSORPIPE -I/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/include -isystem /home/Desktop/opt/libtorch/include -isystem /home/Desktop/opt/libtorch/include/torch/csrc/api/include -g -D_GLIBCXX_USE_CXX11_ABI=1 -std=gnu++23 -o CMakeFiles/mcts.dir/scrs/State.cpp.o -c /home/kpessou/Desktop/.C++_Projects/console/mcts_C++/scrs/State.cpp",
+  "file": "/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/scrs/State.cpp"
+},
+{
+  "directory": "/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/build",
+  "command": "/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -DGLOG_CUSTOM_PREFIX_SUPPORT -DUSE_C10D_GLOO -DUSE_DISTRIBUTED -DUSE_RPC -DUSE_TENSORPIPE -I/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/include -isystem /home/Desktop/opt/libtorch/include -isystem /home/Desktop/opt/libtorch/include/torch/csrc/api/include -g -D_GLIBCXX_USE_CXX11_ABI=1 -std=gnu++23 -o CMakeFiles/mcts.dir/scrs/Tree.cpp.o -c /home/kpessou/Desktop/.C++_Projects/console/mcts_C++/scrs/Tree.cpp",
+  "file": "/home/kpessou/Desktop/.C++_Projects/console/mcts_C++/scrs/Tree.cpp"
+}
+]
