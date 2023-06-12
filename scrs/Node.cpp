@@ -66,16 +66,25 @@ void Node::expand()
         return;
     }
     // get next untried action
+    Move *next_move = NULL;
 
-
-    untried_actions->pop_back();       
-    auto my_new_state = state->state_to_model_input();        // remove it
-    auto my_new_state_to_tensor = torch::from_blob(my_new_state.data(), {1,9});
+    // untried_actions->pop_back();
+    auto my_new_state = state->state_to_model_input(); // remove it
+    auto my_new_state_to_tensor = torch::from_blob(my_new_state.data(), {1, 9});
 
     auto policy = net->forward(my_new_state_to_tensor);
     auto value = torch::argmax(policy).item<int>();
 
-    Move *next_move = new Move(value/3, value%3, state->get_turn()); // get value
+    Move *next_movee = new Move(value / 3, value % 3, state->get_turn()); // get value
+    if (find(untried_actions->begin(), untried_actions->end(), next_movee) != untried_actions->end())
+    {
+        next_move = next_movee;
+    }
+    else
+    {
+        next_move = untried_actions->back();
+        untried_actions->pop_back();
+    }
 
     State *next_state = state->next_state(next_move);
     // build a new MCTS node from it
